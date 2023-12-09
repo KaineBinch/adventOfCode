@@ -1,7 +1,3 @@
-const fs = require("fs")
-const input = fs.readFileSync("./puzzleInput/day2.txt", "utf-8").split("\r\n")
-
-
 const parseGames = (input) => {
   const games = []
   for (const line of input) {
@@ -69,7 +65,7 @@ const solvePartTwo = (games) => {
   return total
 }
 
-const solution = () => {
+const solution = (input) => {
   const games = parseGames(input)
   const partOne = solvePartOne(games)
   const partTwo = solvePartTwo(games)

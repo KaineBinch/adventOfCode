@@ -1,6 +1,3 @@
-const fs = require("fs")
-const input = fs.readFileSync("./puzzleInput/day1.txt", "utf-8").split("\r\n")
-
 // Part one solution
 const solvePartOne = (input) => {
   let numbers = []
@@ -66,7 +63,7 @@ const solvePartTwo = (input) => {
   return values.reduce((a, b) => a + b)
 }
 
-const solution = () => {
+const solution = (input) => {
   const partOne = solvePartOne(input)
   const partTwo = solvePartTwo(input)
 
