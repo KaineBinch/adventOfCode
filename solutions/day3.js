@@ -1,5 +1,24 @@
-const solvePartOne = (input) => {
-  const rows = input.trim().split('\n').map(row => row.trim().split(''));
+const isNumber = (char) => !isNaN(Number(char))
+
+const getFullNumber = (rows, i, j) => {
+  let currentJ = j - 1
+
+  while (currentJ >= 0 && isNumber(rows[i][currentJ])) {
+    currentJ--
+  }
+  const start = currentJ + 1
+  currentJ = j + 1
+
+  while (currentJ <= rows[i].length && isNumber(rows[i][currentJ])) {
+    currentJ++
+  }
+  const end = currentJ - 1
+  const fullNumber = parseInt(rows[i].slice(start, end + 1))
+
+  return [fullNumber, `${i},${start}`]
+}
+
+const solvePartOne = (rows) => {
   const directions = [
     [-1, -1], [-1, 0], [-1, 1],
     [0, -1], [0, 1],
@@ -9,36 +28,33 @@ const solvePartOne = (input) => {
 
   for (let i = 0; i < rows.length; i++) {
     for (let j = 0; j < rows[i].length; j++) {
-      if (rows[i][j] !== '.') {
-        let adjacentToSymbol = false;
+      const char = rows[i][j]
+      if (char !== '.' && !isNumber(char)) {
+        const dupe = {}
 
-        for (const [dx, dy] of directions) {
-          const newRow = i + dx;
-          const newCol = j + dy;
+        for (const [dy, dx] of directions) {
+          const newRow = i + dy;
+          const newCol = j + dx;
 
           if (
             newRow >= 0 &&
             newRow < rows.length &&
             newCol >= 0 &&
             newCol < rows[i].length &&
-            rows[newRow][newCol] !== '.'
+            isNumber(rows[newRow][newCol])
           ) {
-            adjacentToSymbol = true;
-            break;
+            const [number, id] = getFullNumber(rows, newRow, newCol)
+            if (dupe[id] != undefined) continue
+            dupe[id] = true
+            sum += number
           }
-        }
-
-        if (adjacentToSymbol) {
-          sum += parseInt(rows[i][j]);
         }
       }
     }
   }
-
-  return sum;
+  return sum
 }
 
-const totalSum = solvePartOne(input);
 
 const solution = (input) => {
   const partOne = solvePartOne(input)
