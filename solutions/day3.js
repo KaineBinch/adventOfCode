@@ -1,4 +1,12 @@
+const directions = [
+  [-1, -1], [-1, 0], [-1, 1],
+  [0, -1], [0, 1],
+  [1, -1], [1, 0], [1, 1]
+];
+
 const isNumber = (char) => !isNaN(Number(char))
+
+const isStar = (char) => char === '*'
 
 const getFullNumber = (rows, i, j) => {
   let currentJ = j - 1
@@ -18,17 +26,12 @@ const getFullNumber = (rows, i, j) => {
   return [fullNumber, `${i},${start}`]
 }
 
-const solvePartOne = (rows) => {
-  const directions = [
-    [-1, -1], [-1, 0], [-1, 1],
-    [0, -1], [0, 1],
-    [1, -1], [1, 0], [1, 1]
-  ];
+const solvePartOne = (input) => {
   let sum = 0;
 
-  for (let i = 0; i < rows.length; i++) {
-    for (let j = 0; j < rows[i].length; j++) {
-      const char = rows[i][j]
+  for (let i = 0; i < input.length; i++) {
+    for (let j = 0; j < input[i].length; j++) {
+      const char = input[i][j]
       if (char !== '.' && !isNumber(char)) {
         const dupe = {}
 
@@ -38,12 +41,12 @@ const solvePartOne = (rows) => {
 
           if (
             newRow >= 0 &&
-            newRow < rows.length &&
+            newRow < input.length &&
             newCol >= 0 &&
-            newCol < rows[i].length &&
-            isNumber(rows[newRow][newCol])
+            newCol < input[i].length &&
+            isNumber(input[newRow][newCol])
           ) {
-            const [number, id] = getFullNumber(rows, newRow, newCol)
+            const [number, id] = getFullNumber(input, newRow, newCol)
             if (dupe[id] != undefined) continue
             dupe[id] = true
             sum += number
@@ -55,11 +58,47 @@ const solvePartOne = (rows) => {
   return sum
 }
 
+const solvePartTwo = (input) => {
+  let total = 0
+  const dupe = {}
+
+  for (let i = 0; i < input.length; i++) {
+    for (let j = 0; j < input[i].length; j++) {
+      const char = input[i][j]
+
+      if (isStar(char)) {
+        const numbers = []
+
+        for (const [dy, dx] of directions) {
+          const newRow = i + dy;
+          const newCol = j + dx;
+
+          if (
+            newRow >= 0 &&
+            newRow < input.length &&
+            newCol >= 0 &&
+            newCol < input[i].length &&
+            isNumber(input[newRow][newCol])
+          ) {
+            const [number, id] = getFullNumber(input, newRow, newCol)
+            if (dupe[id] != undefined) continue
+            dupe[id] = true
+            numbers.push(number)
+          }
+        }
+        if (numbers.length == 2) total += (numbers[0] * numbers[1])
+      }
+    }
+  }
+  return total
+}
 
 const solution = (input) => {
   const partOne = solvePartOne(input)
+  const partTwo = solvePartTwo(input)
 
-  return { partOne }
+  return { partOne, partTwo }
 }
 
 module.exports = { solution }
+
