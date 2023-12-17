@@ -1,4 +1,3 @@
-// Part one solution
 const solvePartOne = (input) => {
   let numbers = []
   input.forEach((line) => {
@@ -11,8 +10,6 @@ const solvePartOne = (input) => {
   return numbers.reduce((a, b) => a + b)
 }
 
-
-// Part two solution
 const words = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
 const checkForWord = (line, j) => {

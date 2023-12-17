@@ -19,7 +19,6 @@ const parseGames = (input) => {
   return games
 }
 
-// Part one solution
 const maxCubes = { red: 12, green: 13, blue: 14 }
 
 const isRoundValid = (round) => {
@@ -48,7 +47,6 @@ const solvePartOne = (games) => {
   return total
 }
 
-// Part Two Solution
 const solvePartTwo = (games) => {
   let total = 0
 
