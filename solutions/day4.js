@@ -1,8 +1,9 @@
-const parseGames = (input) => {
-  const games = []
+const getGameResults = (input) => {
+  const gameResults = []
   for (const line of input) {
     const game = line.split(": ")[1]
-    const numbers = game.split(" | ")[1]
+    const [winnersStr, numbersStr] = game.split(" | ")
+    const numbers = numbersStr
       .split(" ")
       .filter(str => str.length > 0)
       .map(str => parseInt(str))
@@ -10,21 +11,13 @@ const parseGames = (input) => {
         map[num] = true
         return map
       }, {})
-    const winners = game.split(" | ")[0]
+    const winners = winnersStr
       .split(" ")
       .filter(str => str.length > 0)
       .map(str => parseInt(str))
-    games.push({ numbers, winners })
-  }
-  return games
-}
-
-const getGameResults = (games) => {
-  const gameResults = []
-  for (const game of games) {
     let count = 0
-    for (const winner of game.winners) {
-      if (game.numbers[winner]) count++
+    for (const winner of winners) {
+      if (numbers[winner]) count++
     }
     gameResults.push(count)
   }
@@ -51,8 +44,7 @@ const solvePartTwo = (gameResults) => {
 }
 
 const solution = (input) => {
-  const games = parseGames(input)
-  const gameResults = getGameResults(games)
+  const gameResults = getGameResults(input)
   const partOne = solvePartOne(gameResults)
   const partTwo = solvePartTwo(gameResults)
 
