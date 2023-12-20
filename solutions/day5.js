@@ -82,15 +82,15 @@ const getRangesForTargetRange = (target, maxTarget, map) => {
     if (source > max.source) max.source = source
     ranges.push({
       sourceStart: source,
-      sourceEnd: source + length,
+      sourceEnd: source + length - 1,
       destStart: dest,
-      destEnd: dest + length
+      destEnd: dest + length - 1
     })
   }
   if (min.source - 1 > target) ranges.push({
     sourceStart: target,
     sourceEnd: min.source - 1,
-    destStart: maxTarget,
+    destStart: target,
     destEnd: min.source - 1
   })
   if (max.source + 1 < maxTarget) ranges.push({
@@ -102,7 +102,6 @@ const getRangesForTargetRange = (target, maxTarget, map) => {
   return ranges
 }
 
-
 const getMinMapInputRangesForTargetRange = (target, maxTarget, map) => {
   const resultRanges = []
   const possibleRanges = getRangesForTargetRange(target, maxTarget, map)
@@ -111,7 +110,7 @@ const getMinMapInputRangesForTargetRange = (target, maxTarget, map) => {
     if (target + maxTarget >= destStart && target < destEnd) {
       let startDiff = target - destStart
       if (startDiff < 0) startDiff = 0
-      let endDiff = maxTarget - destEnd
+      let endDiff = destEnd - maxTarget
       if (endDiff < 0) endDiff = 0
       if (sourceStart + startDiff > sourceEnd - endDiff) continue
       resultRanges.push({
@@ -121,7 +120,7 @@ const getMinMapInputRangesForTargetRange = (target, maxTarget, map) => {
       })
     }
   }
-  resultRanges.sort((a, b) => a.sourceEnd - b.sourceEnd)
+  resultRanges.sort((a, b) => a.destStart - b.destStart)
   return resultRanges
 }
 
@@ -130,7 +129,6 @@ const recursivelyGetLowestTarget = (seedRanges, maps, target, maxTarget, mapInde
     for (const seedRange of seedRanges) {
       const offset = findSeedRangeOffset(seedRange, target, maxTarget)
       if (offset != -1) {
-        console.log(target, offset)
         return target + offset
       }
     }
@@ -155,8 +153,6 @@ const solvePartTwo = (seedRanges, maps) => {
   return recursivelyGetLowestTarget(seedRanges, maps, target, maxTarget, maps.length - 1)
 
 }
-
-
 
 const solution = (input) => {
   const [seeds, maps] = parseInput(input)
