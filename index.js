@@ -1,5 +1,4 @@
 const fs = require("fs")
-const { STATUS_CODES } = require("http")
 
 const solutionsDir = "./solutions"
 
