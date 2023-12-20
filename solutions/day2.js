@@ -57,8 +57,7 @@ const solvePartTwo = (games) => {
       if (round.green > minCubes.green) minCubes.green = round.green
       if (round.blue > minCubes.blue) minCubes.blue = round.blue
     }
-    const power = (minCubes.red * minCubes.green * minCubes.blue)
-    total += power
+    total += (minCubes.red * minCubes.green * minCubes.blue)
   }
   return total
 }
